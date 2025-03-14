@@ -157,7 +157,7 @@
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
      float aspeed;
      float aspeed2;
-     if (!ahrs.synthetic_airspeed(aspeed)){
+     if (!ahrs._airspeed_TAS(aspeed)){
         aspeed2 = -500.0;
      }
      else{
