@@ -16,6 +16,8 @@
  #include <AP_HAL/AP_HAL.h>
  #include <AP_Vehicle/AP_Vehicle_Type.h>
  
+#include <AP_AHRS/AP_AHRS.h>
+
  #include <AP_Math/AP_Math.h>
  #include <GCS_MAVLink/GCS.h>
  #include <SRV_Channel/SRV_Channel.h>
@@ -23,7 +25,7 @@
  #include "AP_MotorsTri.h"
  
  extern const AP_HAL::HAL& hal;
- 
+ static uint8_t counter = 0;
  // init
  void AP_MotorsTri::init(motor_frame_class frame_class, motor_frame_type frame_type)
  {
@@ -129,7 +131,7 @@
  
      return mask;
  }
- 
+ AP_AHRS ahrs;
  // output_armed - sends commands to the motors
  // includes new scaling stability patch
  void AP_MotorsTri::output_armed_stabilizing()
@@ -153,9 +155,22 @@
      // apply voltage and air pressure compensation
      const float compensation_gain = thr_lin.get_compensation_gain();
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
-
-     gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
-
+     float aspeed;
+     float aspeed2;
+     if (!ahrs.synthetic_airspeed(aspeed)){
+        aspeed2 = -500.0;
+     }
+     else{
+        aspeed2 = aspeed;
+     }
+     counter++;
+     
+     if (counter > 50) {
+         gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
+         gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", aspeed2);
+        counter = 0;
+    }
+     
      roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
      pitch_thrust = (_pitch_in + _pitch_in_ff) * compensation_gain;
      yaw_thrust = (_yaw_in + _yaw_in_ff) * compensation_gain_not_batt * sinf(radians(_yaw_servo_angle_max_deg)); // we scale this so a thrust request of 1.0f will ask for full servo deflection at full rear throttle
