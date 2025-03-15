@@ -695,7 +695,6 @@ void NavEKF3_core::UpdateFilter(bool predict)
         if (imuSampleTime_ms - last_oneHz_ms >= 1000) {
             // 1Hz tasks
             last_oneHz_ms = imuSampleTime_ms;
-            moveEKFOrigin();
             checkUpdateEarthField();
         }
     }
@@ -2225,25 +2224,4 @@ void NavEKF3_core::verifyTiltErrorVariance()
   By moving the EKF origin we keep the distortion due to spherical
   shape of the earth to a minimum.
  */
-void NavEKF3_core::moveEKFOrigin(void)
-{
-    // only move origin when we have a origin and we're using GPS
-    if (!frontend->common_origin_valid || !filterStatus.flags.using_gps) {
-        return;
-    }
 
-    // move the origin to the current state location
-    Location loc = EKF_origin;
-    loc.offset(stateStruct.position.x, stateStruct.position.y);
-    const Vector2F diffNE = loc.get_distance_NE_ftype(EKF_origin);
-    EKF_origin = loc;
-
-    // now fix all output states
-    stateStruct.position.xy() += diffNE;
-    outputDataNew.position.xy() += diffNE;
-    outputDataDelayed.position.xy() += diffNE;
-
-    for (unsigned index=0; index < imu_buffer_length; index++) {
-        storedOutput[index].position.xy() += diffNE;
-    }
-}

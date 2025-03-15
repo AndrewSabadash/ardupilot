@@ -1540,9 +1540,6 @@ private:
     uint32_t last_oneHz_ms;
     void oneHzUpdate(void);
 
-    // move EKF origin at 1Hz
-    void moveEKFOrigin(void);
-
     // handle earth field updates
     void getEarthFieldTable(const Location &loc);
     void checkUpdateEarthField(void);
