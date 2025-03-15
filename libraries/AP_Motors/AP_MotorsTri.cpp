@@ -18,8 +18,6 @@
  
 #include <AP_AHRS/AP_AHRS.h>
 
-#include <AP_NavEKF3/AP_NavEKF3_core.h> // Путь к заголовочному файлу
-
 
  #include <AP_Math/AP_Math.h>
  #include <GCS_MAVLink/GCS.h>
@@ -135,7 +133,6 @@
      return mask;
  }
  AP_AHRS ahrs;
- NavEKF3_core ekf3_core;
  // output_armed - sends commands to the motors
  // includes new scaling stability patch
  void AP_MotorsTri::output_armed_stabilizing()
@@ -159,21 +156,21 @@
      // apply voltage and air pressure compensation
      const float compensation_gain = thr_lin.get_compensation_gain();
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
-     Vector3f aspeed;
-     Vector3f aspeed2;
-     bool result = ekf3_core.getAirSpdVec(aspeed);
-
-     if (result) {
+     
+     float aspeed;
+     float aspeed2;
+     if (!ahrs.synthetic_airspeed(aspeed)){
+        aspeed2 = -500.0;
+     }
+     else{
         aspeed2 = aspeed;
-    } else {
-        aspeed2 = aspeed2 = Vector3f(-10, -10, -10);
-    }
+     }
     
     counter++;
     
     if (counter > 50) {
         gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
-        gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: X=%5.3f, Y=%5.3f, Z=%5.3f", aspeed2.x, aspeed2.y, aspeed2.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", aspeed2);
         counter = 0;
     }
      

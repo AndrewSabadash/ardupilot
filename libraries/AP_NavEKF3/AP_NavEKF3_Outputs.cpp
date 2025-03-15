@@ -183,9 +183,6 @@ void NavEKF3_core::getVelNED(Vector3f &vel) const
 // returns false if estimate is unavailable
 bool NavEKF3_core::getAirSpdVec(Vector3f &vel) const
 {
-    
-    gcs().send_text(MAV_SEVERITY_INFO, "PV_AidingMode: ");
-    gcs().send_text(MAV_SEVERITY_INFO, PV_AidingMode);
     if (PV_AidingMode == AID_NONE) {
         return false;
     }
