@@ -158,7 +158,7 @@
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
      float aspeed;
      float aspeed2;
-     if (!ahrs.airspeed_estimate(aspeed)) {
+     if (!ahrs.airspeed_estimate_true(aspeed)) {
         aspeed2 = -500.0;
     } else {
         aspeed2 = aspeed;
