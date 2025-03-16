@@ -2229,6 +2229,9 @@ void NavEKF3_core::verifyTiltErrorVariance()
 
  void NavEKF3_core::moveEKFOrigin(void)
  {
+    if (!frontend->common_origin_valid || !filterStatus.flags.using_gps) {
+        return;
+    }
      // move the origin to the current state location
      Location loc = EKF_origin;
      loc.offset(stateStruct.position.x, stateStruct.position.y);
