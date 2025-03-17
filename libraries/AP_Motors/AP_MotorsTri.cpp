@@ -15,10 +15,8 @@
 
  #include <AP_HAL/AP_HAL.h>
  #include <AP_Vehicle/AP_Vehicle_Type.h>
- 
-#include <AP_AHRS/AP_AHRS.h>
 
-#include <AP_NavEKF3/AP_NavEKF3.h>
+ #include <AP_Airspeed.h>
 
  #include <AP_Math/AP_Math.h>
  #include <GCS_MAVLink/GCS.h>
@@ -133,8 +131,6 @@
  
      return mask;
  }
- AP_AHRS ahrs;
- NavEKF3 ekf3;
  // output_armed - sends commands to the motors
  // includes new scaling stability patch
  void AP_MotorsTri::output_armed_stabilizing()
@@ -156,33 +152,21 @@
      _yaw_servo_angle_max_deg.set(constrain_float(_yaw_servo_angle_max_deg, AP_MOTORS_TRI_SERVO_RANGE_DEG_MIN, AP_MOTORS_TRI_SERVO_RANGE_DEG_MAX));
  
      // apply voltage and air pressure compensation
+     
      const float compensation_gain = thr_lin.get_compensation_gain();
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
+     float airspeed_ret;
+     #if AP_AIRSPEED_ENABLED
+        airspeed_ret = AP::airspeed()->get_airspeed(0);
+     #else
+        airspeed_ret = -100.0;
+     #endif
      
-     float aspeed;
-     float aspeed2;
-     Vector3f airspeed_vector;
-     Vector3f aspeed_vec2;
-     if (!ekf3.getAirSpdVec(airspeed_vector)) {
-        aspeed_vec2 = Vector3f(-500.0f, -500.0f, -500.0f);
-    } else {
-        aspeed_vec2 = airspeed_vector;
-    }
-
-     if (!ahrs.synthetic_airspeed(aspeed)){
-        aspeed2 = -500.0;
-     }
-     else{
-        aspeed2 = aspeed;
-     }
-    
     counter++;
     
     if (counter > 50) {
         gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
-        gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", aspeed2);
-        gcs().send_text(MAV_SEVERITY_INFO, "Airspeed Vector: X=%5.3f, Y=%5.3f, Z=%5.3f", 
-            aspeed_vec2.x, aspeed_vec2.y, aspeed_vec2.z);
+        gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
         counter = 0;
     }
      
