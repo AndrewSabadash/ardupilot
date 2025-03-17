@@ -249,8 +249,8 @@
      AP_GROUPINFO("ARS_W_KOLYAN", 46, AP_MotorsMulticopter, _w_ars, 0.7),
 
      // @Param: ARS_T_KOLYAN
-     // @DisplayName: Function Kolyana rasschet w
-     // @Description: Function Kolyana rasschet w
+     // @DisplayName: Function Kolyana rasschet t
+     // @Description: Function Kolyana rasschet t
      // @Units: flt
      // @Range:  0 5
      // @Increment: 0.001
