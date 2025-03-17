@@ -165,8 +165,8 @@
      float w = _w_ars.get();
      float t =  _t_ars.get();
      #if AP_AIRSPEED_ENABLED
+        airspeed_ret = AP::airspeed()->get_airspeed(0);
         if (_scaller_flag.get() >= 1){
-             airspeed_ret = AP::airspeed()->get_airspeed(0);
             k1 = airspeed_ret / (pow(airspeed_ret,w) + q);
             k2 = 1 / airspeed_ret;
             k3 = pow(w,airspeed_ret);
