@@ -33,7 +33,7 @@
      // 0 was used by TB_RATIO
      // 1,2,3 were used by throttle curve
      // 5 was SPIN_ARMED
- 
+    
      // @Param: YAW_HEADROOM
      // @DisplayName: Matrix Yaw Min
      // @Description: Yaw control is given at least this pwm in microseconds range
@@ -81,7 +81,7 @@
      // @Units: A
      // @User: Advanced
      AP_GROUPINFO("BAT_CURR_MAX", 12, AP_MotorsMulticopter, _batt_current_max, AP_MOTORS_BAT_CURR_MAX_DEFAULT),
- 
+     
      // 13, 14 were used by THR_MIX_MIN, THR_MIX_MAX
  
      // @Param: PWM_TYPE
@@ -230,7 +230,33 @@
      // @Increment: 0.001
      // @User: Advanced
      AP_GROUPINFO("SPOOL_TIM_DN", 44, AP_MotorsMulticopter, _spool_down_time, 0),
- 
+
+     // @Param: ARS_Q_KOLYAN
+     // @DisplayName: Function Kolyana rasschet q
+     // @Description: Function Kolyana rasschet q
+     // @Units: int
+     // @Range: 1 200000
+     // @User: Advanced
+     AP_GROUPINFO("ARS_Q_KOLYAN", 45, AP_MotorsMulticopter, _q_ars, 10000),
+
+     // @Param: ARS_W_KOLYAN
+     // @DisplayName: Function Kolyana rasschet w
+     // @Description: Function Kolyana rasschet w
+     // @Units: flt
+     // @Range:  0 5
+     // @Increment: 0.001
+     // @User: Advanced
+     AP_GROUPINFO("ARS_W_KOLYAN", 46, AP_MotorsMulticopter, _w_ars, 0.7),
+
+     // @Param: ARS_T_KOLYAN
+     // @DisplayName: Function Kolyana rasschet w
+     // @Description: Function Kolyana rasschet w
+     // @Units: flt
+     // @Range:  0 5
+     // @Increment: 0.001
+     // @User: Advanced
+     AP_GROUPINFO("ARS_T_KOLYAN", 47, AP_MotorsMulticopter, _t_ars, 0.03),
+
      AP_GROUPEND
  };
  
