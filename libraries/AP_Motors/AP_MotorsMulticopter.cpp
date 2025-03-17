@@ -231,13 +231,13 @@
      // @User: Advanced
      AP_GROUPINFO("SPOOL_TIM_DN", 44, AP_MotorsMulticopter, _spool_down_time, 0),
 
-     // @Param: ARS_ENABLED_KOLYAN
+     // @Param: ARS_ENABLED
      // @DisplayName: Function Kolyana Enabled
      // @Description: Function Kolyana 0 - disable 1 -enable
      // @Units: flg
-     // @Range: 0 1
+     // @Range: -1 1
      // @User: Advanced
-     AP_GROUPINFO("ARS_ENABLED_KOLYAN", 45, AP_MotorsMulticopter, _scaller_flag, 1),
+     AP_GROUPINFO("ARS_ENABLED", 45, AP_MotorsMulticopter, _scaller_flag, 1),
 
 
 
@@ -267,13 +267,13 @@
      // @User: Advanced
      AP_GROUPINFO("ARS_T_KOLYAN", 48, AP_MotorsMulticopter, _t_ars, 0.03),
 
-     // @Param: ARS_DEBUG_KOLYAN
+     // @Param: ARS_DEBUG
      // @DisplayName: Function Kolyana DEBUG Enabled
      // @Description: Function Kolyana DEBUG 0 - disable 1 -enable
      // @Units: flg
      // @Range: 0 1
      // @User: Advanced
-     AP_GROUPINFO("ARS_DEBUG_KOLYAN", 49, AP_MotorsMulticopter, _debug_flag, 1),
+     AP_GROUPINFO("ARS_DEBUG", 49, AP_MotorsMulticopter, _debug_flag, 1),
 
      AP_GROUPEND
  };
