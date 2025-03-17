@@ -16,7 +16,7 @@
  #include <AP_HAL/AP_HAL.h>
  #include <AP_Vehicle/AP_Vehicle_Type.h>
 
- #include <AP_Airspeed.h>
+ #include <AP_Airspeed/AP_Airspeed.h>
 
  #include <AP_Math/AP_Math.h>
  #include <GCS_MAVLink/GCS.h>
