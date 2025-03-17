@@ -25,7 +25,7 @@
  #include "AP_MotorsTri.h"
  
  extern const AP_HAL::HAL& hal;
- static uint8_t counter = 0;
+ static uint16_t counter = 0;
  // init
  void AP_MotorsTri::init(motor_frame_class frame_class, motor_frame_type frame_type)
  {
