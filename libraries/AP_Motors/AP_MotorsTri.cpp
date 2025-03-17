@@ -156,12 +156,25 @@
      const float compensation_gain = thr_lin.get_compensation_gain();
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
      float airspeed_ret;
+     float speed_scaler;
+     float k1;
+     float k2;
+     float k3;
+     float k4;
+     long int q = _q_ars.get();
+     float w = _w_ars.get();
+     float t =  _t_ars.get();
      #if AP_AIRSPEED_ENABLED
         airspeed_ret = AP::airspeed()->get_airspeed(0);
+        k1 = airspeed_ret / (pow(airspeed_ret,w) + q);
+        k2 = 1 / airspeed_ret;
+        k3 = pow(w,airspeed_ret);
+        k4 = 1 / (q / (pow(airspeed_ret,w) + q));
+        speed_scaler = pow((k1 * k2 + k3 * k4), t);
      #else
         airspeed_ret = -100.0;
+        speed_scaler = 1.0;
      #endif
-     
     counter++;
     
     if (counter > 50) {
@@ -170,11 +183,12 @@
         gcs().send_text(MAV_SEVERITY_INFO, "Q Airspeed: %ld",  _q_ars.get());
         gcs().send_text(MAV_SEVERITY_INFO, "W Airspeed: %5.3f",  _w_ars.get());
         gcs().send_text(MAV_SEVERITY_INFO, "T Airspeed: %5.3f", _t_ars.get());
+        gcs().send_text(MAV_SEVERITY_INFO, "Speed Scaler: %5.3f",  speed_scaler);
         counter = 0;
     }
      
-     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
-     pitch_thrust = (_pitch_in + _pitch_in_ff) * compensation_gain;
+     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain * speed_scaler;
+     pitch_thrust = (_pitch_in + _pitch_in_ff) * compensation_gain * speed_scaler;
      yaw_thrust = (_yaw_in + _yaw_in_ff) * compensation_gain_not_batt * sinf(radians(_yaw_servo_angle_max_deg)); // we scale this so a thrust request of 1.0f will ask for full servo deflection at full rear throttle
      throttle_thrust = get_throttle() * compensation_gain_not_batt;
      throttle_avg_max = _throttle_avg_max * compensation_gain;
