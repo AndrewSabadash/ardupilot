@@ -166,7 +166,7 @@
     
     if (counter > 50) {
         gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
-        gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
+        gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", airspeed_ret);
         counter = 0;
     }
      
