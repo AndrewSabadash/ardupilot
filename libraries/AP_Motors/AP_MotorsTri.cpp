@@ -168,8 +168,8 @@
         gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
         gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", airspeed_ret);
         gcs().send_text(MAV_SEVERITY_INFO, "Q Airspeed: %ld",  _q_ars.get());
-        gcs().send_text(MAV_SEVERITY_INFO, "W Airspeed: %5.3f", static_cast<float>(_w_ars.value()));
-        gcs().send_text(MAV_SEVERITY_INFO, "T Airspeed: %5.3f", static_cast<float>(_w_ars.value()));
+        gcs().send_text(MAV_SEVERITY_INFO, "W Airspeed: %5.3f",  _w_ars.get());
+        gcs().send_text(MAV_SEVERITY_INFO, "T Airspeed: %5.3f", _t_ars.get());
         counter = 0;
     }
      
