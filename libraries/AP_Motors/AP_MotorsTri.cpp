@@ -133,6 +133,7 @@
  
      return mask;
  }
+ RC_Channels rc;
  // output_armed - sends commands to the motors
  // includes new scaling stability patch
  void AP_MotorsTri::output_armed_stabilizing()
@@ -154,8 +155,8 @@
      _yaw_servo_angle_max_deg.set(constrain_float(_yaw_servo_angle_max_deg, AP_MOTORS_TRI_SERVO_RANGE_DEG_MIN, AP_MOTORS_TRI_SERVO_RANGE_DEG_MAX));
  
      // apply voltage and air pressure compensation
-     int pwm_rc9;
-     if (!RC_Channels::get_pwm(9,pwm_rc9)){
+     uint16_t pwm_rc9;
+     if (!rc.get_pwm(9,pwm_rc9)){
         pwm_rc9 = -100;
      }
 
