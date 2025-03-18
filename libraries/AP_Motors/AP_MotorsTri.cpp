@@ -154,11 +154,16 @@
      _yaw_servo_angle_max_deg.set(constrain_float(_yaw_servo_angle_max_deg, AP_MOTORS_TRI_SERVO_RANGE_DEG_MIN, AP_MOTORS_TRI_SERVO_RANGE_DEG_MAX));
  
      // apply voltage and air pressure compensation
+     bool flag_rc;
+     bool flag_rc_init;
      uint16_t pwm_rc9;
      if (!rc().get_pwm(9, pwm_rc9)) {
         pwm_rc9 = -100;
      }
-
+     if (pwm_rc9 < 1700){
+        flag_rc = true;
+     }
+     else{flag_rc = false;}
      const float compensation_gain = thr_lin.get_compensation_gain();
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
      float airspeed_ret;
@@ -172,7 +177,7 @@
      float t =  _t_ars.get();
      #if AP_AIRSPEED_ENABLED
         airspeed_ret = AP::airspeed()->get_airspeed(0);
-        if (_scaller_flag.get() >= 1 && airspeed_ret != 0.000){
+        if (_scaller_flag.get() >= 1 && airspeed_ret != 0.000 && flag_rc){
             k1 = airspeed_ret / (pow(airspeed_ret,w) + q);
             k2 = 1 / airspeed_ret;
             k3 = pow(w,airspeed_ret);
@@ -193,7 +198,10 @@
             gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
             gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", airspeed_ret);
             gcs().send_text(MAV_SEVERITY_INFO, "Speed Scaler: %5.3f",  speed_scaler);
-            gcs().send_text(MAV_SEVERITY_INFO, "PWM Chan 9 %d",  pwm_rc9);
+            if (flag_rc){
+                gcs().send_text(MAV_SEVERITY_INFO, "RC Controll Speed Scaler: Enabled");
+            }
+            gcs().send_text(MAV_SEVERITY_INFO, "RC Controll Speed Scaler: Disabled");
         }
         counter = 0;
     }
