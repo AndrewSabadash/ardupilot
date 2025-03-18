@@ -154,7 +154,10 @@
      _yaw_servo_angle_max_deg.set(constrain_float(_yaw_servo_angle_max_deg, AP_MOTORS_TRI_SERVO_RANGE_DEG_MIN, AP_MOTORS_TRI_SERVO_RANGE_DEG_MAX));
  
      // apply voltage and air pressure compensation
-     int chnl_9 = RC_Channels::get_pwm(9);
+     int pwm_rc9;
+     if (!RC_Channels::get_pwm(9,pwm_rc9)){
+        pwm_rc9 = -100;
+     }
 
      const float compensation_gain = thr_lin.get_compensation_gain();
      const float compensation_gain_not_batt = thr_lin.get_compensation_gain_not_batt();
@@ -190,7 +193,7 @@
             gcs().send_text(MAV_SEVERITY_INFO, "Compensation gain: %5.3f", compensation_gain);
             gcs().send_text(MAV_SEVERITY_INFO, "Airspeed: %5.3f", airspeed_ret);
             gcs().send_text(MAV_SEVERITY_INFO, "Speed Scaler: %5.3f",  speed_scaler);
-            gcs().send_text(MAV_SEVERITY_INFO, "PWM Chan 9 %d",  chnl_9);
+            gcs().send_text(MAV_SEVERITY_INFO, "PWM Chan 9 %d",  pwm_rc9);
         }
         counter = 0;
     }
