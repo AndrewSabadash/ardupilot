@@ -156,7 +156,7 @@
  
      // apply voltage and air pressure compensation
      uint16_t pwm_rc9;
-     if (!rc.get_pwm(9,pwm_rc9)){
+     if (!rc().get_pwm(9, pwm_rc9)) {
         pwm_rc9 = -100;
      }
 
