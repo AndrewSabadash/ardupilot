@@ -204,8 +204,9 @@
                         gcs().send_text(MAV_SEVERITY_INFO, "RC Controll Speed Scaler: Enabled");
                     }
                     else{gcs().send_text(MAV_SEVERITY_INFO, "RC Controll Speed Scaler: Disabled");}
+                    temp = flag_rc;
                 }
-                temp = flag_rc;
+                
         counter = 0;
     }
      
