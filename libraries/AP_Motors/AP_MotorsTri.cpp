@@ -133,7 +133,6 @@
  
      return mask;
  }
- RC_Channels rc;
  // output_armed - sends commands to the motors
  // includes new scaling stability patch
  void AP_MotorsTri::output_armed_stabilizing()
